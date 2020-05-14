@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --mode production",
     "execute": "node dist/bundle.js",
-    "start": "webpack-dev-server --open --mode development"
+    "start": "webpack-dev-server --open --mode development",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "axios": "^0.19.2",
+    "billboard.js": "^1.12.8",
     "chart.js": "^2.9.3",
     "css-loader": "^3.5.3",
     "d3": "^5.16.0",
@@ -46,6 +48,7 @@
     "babel-preset-vue": "^2.0.2",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "jest": "^26.0.1",
     "vue-loader": "^15.9.2",
     "vue-template-compiler": "^2.6.11",
     "webpack": "^4.43.0",

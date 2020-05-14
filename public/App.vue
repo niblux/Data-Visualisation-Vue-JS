@@ -36,15 +36,20 @@
         <div class="dash-header">
           <h1>Dashboard</h1>
           <ul>
-            <li class="active-dashboard">Item One</li>
-            <li>Item Two</li>
+            <li class="active-dashboard">Bar Chart</li>
+            <li>Pie Chart</li>
             <li>Item Two</li>
           </ul>
         </div>
-        <div class="bar-chart"></div>
-        <div class="pie-chart"></div>
+        <div class="bar-chart">
+          <BarChart :chartData="chartData" />
+         <p>Chart Data {{ chartData }}</p> 
+        </div>
+        <div class="pie-chart">
+          <!-- <PieChart :chartData="chartData" /> -->
+        </div>
         <h1 class="table-header">Data Table</h1>
-        <div class="table-edit"></div>
+        <!-- <div class="table-edit"></div> -->
       </div>
     </div>
   </div>
@@ -52,137 +57,28 @@
 
 <script>
 import * as d3 from "d3";
+import bb from "billboard.js";
+import "billboard.js/dist/billboard.css";
+import { mapState, mapGetters } from "vuex";
+import BarChart from "../components/BarChart.vue";
+import PieChart from "../components/PieChart.vue";
 
 export default {
   data() {
-    return {
-      customers: null
-    };
+    return {};
   },
-  methods: {
-    async fetchUsers() {
-      const baseURI = "https://updates.suade.org/files/people.json";
-      const result = await this.$http.get(baseURI);
-      this.displayBarChart(result.data);
-    },
-    displayBarChart: function(customers) {
-      const countValues = (arr) => {
-        let result = {};
-        arr.forEach(function(x) {
-          result[x] = (result[x] || 0) + 1;
-        });
-        return result;
-      };
-
-      const fruits = countValues(customers.map(i => i.preferences.fruit));
-      fruits.type = 'fruit';
-      const pets = countValues(customers.map(i => i.preferences.pet));
-      pets.type = 'pet';
-      const eyeColors = countValues(customers.map(i => i.eyeColor));
-      eyeColors.type = 'eyeColor';
-
-      const data = [];
-      data.push(fruits);
-      data.push(pets)
-      data.push(eyeColors);
-        
-      const keys = data.map(item => Object.keys(item)).flatMap(x => x);
-
-      const groupKey = "type";
-
-      var margin = { top: 20, right: 20, bottom: 30, left: 40 };
-      const width = 960 - margin.left - margin.right;
-      const height = 500 - margin.top - margin.bottom;
-
-      const color = d3
-        .scaleOrdinal()
-        .range([
-          "#98abc5",
-          "#8a89a6",
-          "#7b6888",
-          "#6b486b",
-          "#a05d56",
-          "#d0743c",
-          "#ff8c00"
-        ]);
-
-      
-      const svg = d3
-        .select(".bar-chart")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height);
-
-      const x0 = d3
-        .scaleBand()
-        .domain(data.map(d => d[groupKey]))
-        .rangeRound([margin.left, width - margin.right])
-        .paddingInner(0.1);
-
-      const x1 = d3
-        .scaleBand()
-        .domain([0, keys])
-        .rangeRound([0, x0.bandwidth()])
-        .padding(0.05);
-
-      const y = d3
-        .scaleLinear()
-        .domain([0, 30])
-        .nice()
-        .rangeRound([height - margin.bottom, margin.top]);
-
-      const xAxis = g =>
-        g
-          .attr("transform", `translate(0,${height - margin.bottom})`)
-          .call(d3.axisBottom(x0).tickSizeOuter(0))
-          .call(g => g.select(".domain").remove());
-
-      const yAxis = g =>
-        g
-          .attr("transform", `translate(${margin.left},0)`)
-          .call(d3.axisLeft(y).ticks(null, "s"))
-          .call(g => g.select(".domain").remove())
-          .call(g =>
-            g
-              .select(".tick:last-of-type text")
-              .clone()
-              .attr("x", 3)
-              .attr("text-anchor", "start")
-              .attr("font-weight", "bold")
-              .text(data.y)
-          );
-
-      svg
-        .append("g")
-        .selectAll("g")
-        .data(data)
-        .join("g")
-        .attr("transform", d => `translate(${x0(d[groupKey])},0)`)
-        .selectAll("rect")
-        .data(d => {              
-              let result = keys.map(key => ({key, value: d[key]}))
-              
-              let filtered = result.filter((x) => x.value !== undefined && x.key !== 'type');
-              return filtered;
-        })
-        .join("rect")
-        .attr("x", d => x1(d.key))
-        .attr("y", d => y(d.value))
-        .attr("width", x1.bandwidth())
-        .attr("height", d => console.log('vlas', d.value) || d.value) // change height to how many people have a certain pet
-        .attr("fill", d => color(d.key));
-
-      svg.append("g").call(xAxis);
-
-      svg.append("g").call(yAxis);
-
-      // svg.append("g").call(legend);
-
-      return svg.node();
-    }
+  components: {
+    BarChart,
+    PieChart
+  },
+  methods: {},
+  created() {
+    this.$store.dispatch("getData");
   },
   mounted() {
-    this.fetchUsers();
+  },
+  computed: {
+    ...mapState(["chartData"]),
   }
 };
 </script>
@@ -349,21 +245,16 @@ header {
 .pie-chart {
   max-width: 400px;
   max-height: 400px;
+  grid-row: 2;
+  grid-column: 3;
 }
 
 .bar-chart {
   grid-row: 2 /3;
   grid-column: 1 / 3;
   gap: 2rem;
-  overflow-x: scroll;
 }
-/*
-.pie-chart {
-  background: orange;
-  grid-row: 2 / 4;
-  grid-column: 3 / 4;
-}
-*/
+
 .table-edit {
   max-width: 600px;
   max-height: 400px;
