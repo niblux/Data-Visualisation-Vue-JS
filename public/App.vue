@@ -43,13 +43,14 @@
         </div>
         <div class="bar-chart">
           <BarChart :chartData="chartData" />
-         <p>Chart Data {{ chartData }}</p> 
         </div>
         <div class="pie-chart">
-          <!-- <PieChart :chartData="chartData" /> -->
+          <PieChart :chartData="chartData" />
         </div>
         <h1 class="table-header">Data Table</h1>
-        <!-- <div class="table-edit"></div> -->
+        <div class="table-edit">
+          <TableEdit :chartData="chartData" />
+        </div>
       </div>
     </div>
   </div>
@@ -62,23 +63,30 @@ import "billboard.js/dist/billboard.css";
 import { mapState, mapGetters } from "vuex";
 import BarChart from "../components/BarChart.vue";
 import PieChart from "../components/PieChart.vue";
+import TableEdit from "../components/TableEdit.vue";
 
 export default {
   data() {
-    return {};
+    return {
+      tableData: []
+    };
   },
   components: {
     BarChart,
-    PieChart
+    PieChart,
+    TableEdit
   },
   methods: {},
   created() {
     this.$store.dispatch("getData");
   },
   mounted() {
+    this.$nextTick(function() {
+      this.tableData = Object.entries(this.chartData);
+    });
   },
   computed: {
-    ...mapState(["chartData"]),
+    ...mapState(["chartData"])
   }
 };
 </script>
@@ -219,12 +227,12 @@ header {
 
 .inner-grid {
   display: grid;
-  grid-template-columns: 100px repeat(2, minmax(600px, auto)) 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template-rows: 150px 1fr 1fr 150px;
 }
 
 .dash-header {
-  grid-column: 2;
+  grid-column: 1;
 }
 
 .dash-header ul {
@@ -243,8 +251,6 @@ header {
 }
 
 .pie-chart {
-  max-width: 400px;
-  max-height: 400px;
   grid-row: 2;
   grid-column: 3;
 }
@@ -256,16 +262,13 @@ header {
 }
 
 .table-edit {
-  max-width: 600px;
-  max-height: 400px;
   margin-top: 80px;
   grid-row: 3;
-  grid-column: 2;
-  background: rebeccapurple;
+  grid-column: 1;
 }
 
 .table-header {
   grid-row: 3;
-  grid-column: 2;
+  grid-column: 1;
 }
 </style>
