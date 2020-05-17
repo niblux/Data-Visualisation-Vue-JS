@@ -13,6 +13,13 @@ export default new Vuex.Store({
         GET_DATA(state, data) {
             state.chartData = data
         },
+        UPDATE_DATA(state, data) {
+            console.log('data >>>', data);
+            state.chartData.map(item => {
+                console.log('item in mutation', item);
+                // item[data.type].id === data.id ? 'found match' : 'no match'
+            });
+        }
     },
     getters: {
         chartDatas: state => state.chartData
@@ -23,12 +30,9 @@ export default new Vuex.Store({
             const { data } = await axios.get(baseURI);
             let formattedData = formatData(data);
             commit('GET_DATA', formattedData);
-            // axios.get(baseURI).then(result => {
-            //     let data = formatData(result.data);
-            //     commit('GET_DATA', data)
-            // }).catch((error) => {
-            //     console.log('Error occurred', error);
-            // });
         },
+        updateData({ commit }, data) {
+            commit('UPDATE_DATA', data);
+        }
     }
 })
