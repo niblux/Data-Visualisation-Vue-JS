@@ -21,9 +21,9 @@ export default {
   methods: {
     displayPieChart(data) {
       const barData = JSON.parse(JSON.stringify(data));
-      const fruits = barData[0].fruits;
-      const pets = barData[0].pets;
-      const eyeColors = barData[0].eyeColors;
+      const fruits = barData[0];
+      const pets = barData[1];
+      const eyeColors = barData[2];
 
       var canvas = document.getElementById("pie-chart");
       var ctx = canvas.getContext("2d");
@@ -37,7 +37,7 @@ export default {
         type: "pie",
         data: {
           datasets: [
-                    {
+            {
               label: "",
               borderWidth: 1,
               data: [fruits[0].count, pets[0].count, eyeColors[0].count],
@@ -137,6 +137,18 @@ export default {
     setTimeout(() => {
       this.displayPieChart(this.chartData);
     }, 1000);
+  },
+  created() {
+    this.unsubscribe = this.$store.subscribe((mutation, state) => {
+      if (mutation.type === "UPDATE_DATA") {
+        this.updateChart;
+      }
+    });
+  },
+  computed: {
+    updateChart: function() {
+      this.displayPieChart(this.chartData);
+    }
   }
 };
 </script>

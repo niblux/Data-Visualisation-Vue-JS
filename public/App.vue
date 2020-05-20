@@ -77,6 +77,9 @@ export default {
     TableEdit
   },
   methods: {},
+  updated() {
+    this.$store.getters.chartData;
+  },
   created() {
     this.$store.dispatch("getData");
   },
@@ -86,7 +89,7 @@ export default {
     });
   },
   computed: {
-    ...mapState(["chartData"])
+    ...mapGetters(["chartData"])
   }
 };
 </script>

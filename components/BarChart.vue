@@ -1,9 +1,9 @@
 <template>
-      <canvas id="bar-chart" width="400" height="400"></canvas>
+  <canvas id="bar-chart" width="400" height="400"></canvas>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import Vue from "vue";
 
 export default {
@@ -19,9 +19,13 @@ export default {
   methods: {
     displayBarChart(data) {
       const barData = JSON.parse(JSON.stringify(data));
-      const fruits = barData[0].fruits;
-      const pets = barData[0].pets;
-      const eyeColors = barData[0].eyeColors;
+      console.log("barData", barData);
+      const fruits = barData[0];
+      const pets = barData[1];
+      const eyeColors = barData[2];
+
+      console.log("eyeColors[0].count", eyeColors[0].count);
+      console.log("eyeColors[0].count", eyeColors[0].name);
 
       var ctx = document.getElementById("bar-chart").getContext("2d");
       var myChart = new Chart(ctx, {
@@ -67,18 +71,19 @@ export default {
 
               // get each set of bars per dataset
               const metaFirst = chartInstance.controller.getDatasetMeta(0).data;
-              const metaSecond = chartInstance.controller.getDatasetMeta(1).data;
+              const metaSecond = chartInstance.controller.getDatasetMeta(1)
+                .data;
               const metaThird = chartInstance.controller.getDatasetMeta(2).data;
-              const metaFourth = chartInstance.controller.getDatasetMeta(3).data;
+              const metaFourth = chartInstance.controller.getDatasetMeta(3)
+                .data;
 
               // setup individual labels
-              const first = ["apple", "dog", "green"];
-              const second = ["strawberry", "cat", "brown"];
-              const third = ["mango", "bird", "blue"];
-              const fourth = ["banana", '', ''];
+              const first = ["apple", "bird", "brown"];
+              const second = ["strawberry", "cat", "blue"];
+              const third = ["banana", "none", "green"];
+              const fourth = ["mango", "dog", ""];
 
               // use positions for each bar to add unique label
-
               for (let i = 0; i < first.length; i++) {
                 ctx.fillText(
                   first[i],
@@ -121,10 +126,25 @@ export default {
       });
     }
   },
+  created() {
+    this.unsubscribe = this.$store.subscribe((mutation, state) => {
+      if (mutation.type === "UPDATE_DATA") {
+        this.updateChart;
+      }
+    });
+  },
   mounted() {
     setTimeout(() => {
       this.displayBarChart(this.chartData);
     }, 1000);
+  },
+  computed: {
+    updateChart: function() {
+      this.displayBarChart(this.chartData);
+    }
+  },
+  beforeDestroy() {
+    this.unsubscribe();
   }
 };
 </script>

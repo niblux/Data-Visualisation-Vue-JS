@@ -1,7 +1,4 @@
 var ID = function () {
-    // Math.random should be unique because of its seeding algorithm.
-    // Convert it to base 36 (numbers + letters), and grab the first 9 characters
-    // after the decimal.
     return '_' + Math.random().toString(36).substr(2, 9);
 };
 
@@ -12,28 +9,34 @@ export const countAndFormat = arr => {
     });
 
     const keyValue = Object.entries(result);
-    console.log('keyValue', keyValue);
-
     return keyValue.map(item => {
-        return { ID, name: item[0], count: item[1], edit: false };
+        return { id: ID(), name: item[0], count: item[1], edit: false };
     });
 };
 
 export const formatData = (arr) => {
-    const fruits = countAndFormat(arr.map(i => i.preferences.fruit));
-    fruits.type = "fruit";
-    const pets = countAndFormat(arr.map(i => i.preferences.pet));
-    pets.type = "pet";
-    const eyeColors = countAndFormat(arr.map(i => i.eyeColor));
-    eyeColors.type = "eyeColor";
+    const fruits = countAndFormat(arr.map(i => i.preferences.fruit)).map(fruit => {
+        fruit.type = 'fruits'
+        return fruit;
+    });
 
-    let chartData = [
-        {
-            fruits,
-            pets,
-            eyeColors
-        }
-    ];
+    fruits.category = 'fruits';
+
+    const pets = countAndFormat(arr.map(i => i.preferences.pet)).map(pet => {
+        pet.type = 'pets';
+        return pet;
+    });
+
+    pets.category = 'pets';
+
+    const eyeColors = countAndFormat(arr.map(i => i.eyeColor)).map(eyeColor => {
+        eyeColor.type = 'eyeColors';
+        return eyeColor;
+    });
+
+    eyeColors.category = 'eyeColors';
+
+    let chartData = [fruits, pets, eyeColors];
     return chartData;
 }
 

@@ -14,15 +14,19 @@ export default new Vuex.Store({
             state.chartData = data
         },
         UPDATE_DATA(state, data) {
-            console.log('data >>>', data);
-            state.chartData.map(item => {
-                console.log('item in mutation', item);
-                // item[data.type].id === data.id ? 'found match' : 'no match'
+            state.chartData.map((item, idx) => {
+                if (item.category === data.type) {
+                    item.map((updated) => {
+                        if (updated.id === data.id) {
+                            Vue.set(item[idx], 'count', data.count);
+                        }
+                    })
+                }
             });
         }
     },
     getters: {
-        chartDatas: state => state.chartData
+        chartData: state => state.chartData,
     },
     actions: {
         async getData({ commit }) {

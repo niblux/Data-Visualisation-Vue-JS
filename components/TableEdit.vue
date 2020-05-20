@@ -10,11 +10,12 @@
       </thead>
       <tbody>
         <template v-for="row in rows">
-          <template v-for="col in columns">
-            <tr v-for="item in row[col]" :key="item.id">
+            <tr v-for="item in row" :key="item.id">
               <td>{{ item.name }}</td>
               <template v-if="item.edit">
+              <td>
                 <input type="text" v-model.number="item.count" />
+                </td>
               </template>
               <template v-if="!item.edit">
                 <td>{{ item.count }}</td>
@@ -22,7 +23,6 @@
               <button v-on:click="setEdit($event, item)">Edit</button>
               <button v-show="item.edit" v-on:click="updateItem($event, item)">Save</button>
             </tr>
-          </template>
         </template>
       </tbody>
     </table>
@@ -46,24 +46,16 @@ export default {
   mounted() {
     setTimeout(() => {
       const barData = JSON.parse(JSON.stringify(this.chartData));
-      console.log('barData', barData);
-
       this.rows = barData;
     }, 1000);
   },
   methods: {
     setEdit(evt, item) {
       item.edit = !item.edit
-      // console.log('evt', evt.target.innerHTML);
-      // need to know which name the clicked count is related to 
-      // so when we process the update it will update the correct item in the array
-      // as in fruits.apple.count
-      // this.editFlag = !this.editFlag
     }, 
     updateItem(evt, item) {
       item.edit = false;
-      this.$store.dispatch('updateData', item)
-      // console.log(item);
+      this.$store.dispatch('updateData', item);
     }
   },
   computed: {
