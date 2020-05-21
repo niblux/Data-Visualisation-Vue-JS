@@ -4,12 +4,18 @@ require("babel-polyfill");
 
 
 module.exports = {
-    entry: ["babel-polyfill", __dirname + "/main.js"],
+    entry: {
+        index: ["babel-polyfill", __dirname + "/main.js"],
+        fontAwesome: './modules/fontModule.js',
+    },
     output: {
         path: __dirname + '/dist',
-        filename: 'bundle.js'
+        filename: '[name].bundle.js'
     },
     devtool: "eval-source-map",
+    devServer: {
+        historyApiFallback: true
+    },
     module: {
         rules: [
             {
