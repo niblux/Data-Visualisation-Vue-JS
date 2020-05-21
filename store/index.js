@@ -14,11 +14,11 @@ export default new Vuex.Store({
             state.chartData = data
         },
         UPDATE_DATA(state, data) {
-            state.chartData.map((item, idx) => {
+            state.chartData.map(item => {
                 if (item.category === data.type) {
                     item.map((updated) => {
                         if (updated.id === data.id) {
-                            Vue.set(item[idx], 'count', data.count);
+                            Vue.set(updated, 'count', data.count);
                         }
                     })
                 }

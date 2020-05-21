@@ -1,19 +1,25 @@
 <template>
-  <div>
-    <div class="pie-chart">
-      <canvas id="pie-chart" width="400" height="400"></canvas>
-      <div id="my-legend-con" class="legend-con"></div>
+      <div class="pie-chart">
+      <canvas id="pie-chart" class="card" width="600" height="600"></canvas>
+      <div class="table-edit card">
+        <TableEdit :chartData="chartData" />
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
+import TableEdit from "./TableEdit.vue";
+import Header from "./Header.vue";
+
 export default {
   props: {
     chartData: {
       type: Array,
       required: true
     }
+  },
+  components: {
+    TableEdit
   },
   data() {
     return {};
@@ -31,11 +37,10 @@ export default {
         var activePoints = myPieChart.getElementsAtEvent(evt);
       };
       var myPieChart = new Chart(ctx, {
-        test: function() {
-          return this;
-        },
         type: "pie",
         data: {
+          labels: ["fruits", "pets", "eyeColors"],
+
           datasets: [
             {
               label: "",
@@ -64,32 +69,9 @@ export default {
           ]
         },
         options: {
+          responsive: false,
           legend: false,
-          legendCallback: function(chart) {
-            var legendHtml = [];
-            legendHtml.push("<ul>");
-            var item = this.data.datasets[0];
-            for (var i = 0; i < item.data.length; i++) {
-              legendHtml.push("<li>");
-              legendHtml.push(
-                '<span class="chart-legend" style="background-color:' +
-                  item.backgroundColor[i] +
-                  '"></span>'
-              );
-              legendHtml.push(
-                '<span class="chart-legend-label-text">' +
-                  item.data[i] +
-                  " person - " +
-                  this.data.labels[i] +
-                  " times</span>"
-              );
-              legendHtml.push("</li>");
-            }
-
-            legendHtml.push("</ul>");
-            return legendHtml.join("");
-          },
-          animation: {
+                    animation: {
             onComplete: function() {
               const chartInstance = this.chart;
               ctx = chartInstance.ctx;
@@ -106,10 +88,10 @@ export default {
                 .data;
 
               // setup individual labels
-              const first = ["apple", "dog", "green"];
-              const second = ["strawberry", "cat", "brown"];
-              const third = ["mango", "bird", "blue"];
-              const fourth = ["banana", "", ""];
+              const first = ["apple", "bird", "brown"];
+              const second = ["strawberry", "cat", "blue"];
+              const third = ["banana", "none", "green"];
+              const fourth = ["mango", "dog", ""];
 
               // use positions for each bar to add unique label
               ctx.fillText(first[0], 370, 228);
@@ -130,7 +112,6 @@ export default {
         }
       });
 
-      myPieChart.config.options.legendCallback.call(myPieChart);
     }
   },
   mounted() {
@@ -154,4 +135,9 @@ export default {
 </script>
 
 <style>
+canvas#pie-chart {
+  border: 1px solid #efefef;
+  border-radius: 10px;
+  padding: 10px;
+}
 </style>

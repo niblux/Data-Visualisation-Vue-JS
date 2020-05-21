@@ -5,15 +5,33 @@
         <i class="fas fa-bars"></i>
       </div>
       <ul class="nav-links">
-        <li>
-          <i class="far fa-chart-bar"></i>
-        </li>
-        <li class="active">
-          <i class="fas fa-chart-pie"></i>
-        </li>
-        <li>
-          <i class="fas fa-file-upload"></i>
-        </li>
+        <router-link to="/bar-chart">
+          <li
+            @click="active = 'chart'"
+            class="navbar__menu--item"
+            :class="{active:active === 'chart'}"
+          >
+            <i class="far fa-chart-bar"></i>
+          </li>
+        </router-link>
+        <router-link to="/pie-chart">
+          <li
+            @click="active = 'pie'"
+            class="navbar__menu--item"
+            :class="{active:active === 'pie'}"
+          >
+            <i class="fas fa-chart-pie"></i>
+          </li>
+        </router-link>
+        <router-link to="/upload">
+        <li
+            @click="active = 'upload'"
+            class="navbar__menu--item"
+            :class="{active:active === 'upload'}"
+          >
+            <i class="fas fa-file-upload"></i>
+          </li>
+        </router-link>
       </ul>
     </div>
 
@@ -35,31 +53,14 @@
       <div class="inner-grid">
         <div class="dash-header">
           <h1>Dashboard</h1>
-          <ul>
-            <li class="active-dashboard">Bar Chart</li>
-            <li>Pie Chart</li>
-            <li>Item Two</li>
-          </ul>
         </div>
-        <div class="bar-chart">
-          <BarChart :chartData="chartData" />
-        </div>
-        <div class="pie-chart">
-          <PieChart :chartData="chartData" />
-        </div>
-        <h1 class="table-header">Data Table</h1>
-        <div class="table-edit">
-          <TableEdit :chartData="chartData" />
-        </div>
+        <router-view :chartData="chartData" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import * as d3 from "d3";
-import bb from "billboard.js";
-import "billboard.js/dist/billboard.css";
 import { mapState, mapGetters } from "vuex";
 import BarChart from "../components/BarChart.vue";
 import PieChart from "../components/PieChart.vue";
@@ -68,7 +69,7 @@ import TableEdit from "../components/TableEdit.vue";
 export default {
   data() {
     return {
-      tableData: []
+      active: null
     };
   },
   components: {
@@ -76,7 +77,8 @@ export default {
     PieChart,
     TableEdit
   },
-  methods: {},
+  methods: {
+  },
   updated() {
     this.$store.getters.chartData;
   },
@@ -84,6 +86,7 @@ export default {
     this.$store.dispatch("getData");
   },
   mounted() {
+    this.active = 'chart';
     this.$nextTick(function() {
       this.tableData = Object.entries(this.chartData);
     });
@@ -94,14 +97,9 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
-.bar {
-  fill: steelblue;
-}
-
-.test {
-  color: red;
-  background: red;
+<style lang="css">
+body {
+  display: grid;
 }
 
 .container {
@@ -135,11 +133,22 @@ ul.nav-links {
   font-size: 1.5em;
 }
 
+a:-webkit-any-link {
+  text-decoration: none;
+}
+
 ul.nav-links li {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 35px 0px;
+}
+
+a:-webkit-any-link > li.page-link {
+  text-decoration: none;
+  color: #000;
+  font-size: 18px;
+  padding-left: 10px;
 }
 
 .active {
@@ -151,7 +160,7 @@ ul.nav-links li {
   );
 }
 
-.active-dashboard {
+.activeDashboard {
   border-bottom: 4px solid var(--icon-colour);
 }
 
@@ -219,10 +228,6 @@ header {
   display: inline-block;
 }
 
-.user-avatar i {
-  width: 50px;
-}
-
 .user-avatar p {
   width: 150px;
   padding-left: 10px;
@@ -232,10 +237,12 @@ header {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 150px 1fr 1fr 150px;
+  padding: 10px;
 }
 
 .dash-header {
   grid-column: 1;
+  padding: 10px;
 }
 
 .dash-header ul {
@@ -254,24 +261,39 @@ header {
 }
 
 .pie-chart {
+  display: grid;
   grid-row: 2;
-  grid-column: 3;
+  grid-column: 1;
+  grid-gap: 10px;
 }
 
 .bar-chart {
-  grid-row: 2 /3;
-  grid-column: 1 / 3;
-  gap: 2rem;
+  display: grid;
+  grid-row: 2;
+  grid-column: 1;
+  gap: 10px;
 }
 
 .table-edit {
-  margin-top: 80px;
-  grid-row: 3;
-  grid-column: 1;
+  padding: 10px;
+  grid-row: 1;
+  grid-column: 3;
 }
 
 .table-header {
-  grid-row: 3;
-  grid-column: 1;
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.card {
+  border: 1px solid #efefef;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 </style>

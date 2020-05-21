@@ -1,10 +1,18 @@
 <template>
-  <canvas id="bar-chart" width="400" height="400"></canvas>
+
+ <div class="bar-chart">
+    <canvas id="bar-chart" class="card"></canvas>
+    <div class="table-edit card">
+      <TableEdit :chartData="chartData" />
+    </div>
+  </div>
 </template>
 
 <script>
 import { mapState, mapGetters } from "vuex";
 import Vue from "vue";
+import TableEdit from "./TableEdit.vue";
+import Header from "./Header.vue";
 
 export default {
   props: {
@@ -13,19 +21,18 @@ export default {
       required: true
     }
   },
+  components: {
+    TableEdit
+  },
   data() {
     return {};
   },
   methods: {
     displayBarChart(data) {
       const barData = JSON.parse(JSON.stringify(data));
-      console.log("barData", barData);
       const fruits = barData[0];
       const pets = barData[1];
       const eyeColors = barData[2];
-
-      console.log("eyeColors[0].count", eyeColors[0].count);
-      console.log("eyeColors[0].count", eyeColors[0].name);
 
       var ctx = document.getElementById("bar-chart").getContext("2d");
       var myChart = new Chart(ctx, {
@@ -54,7 +61,7 @@ export default {
             {
               label: "",
               borderWidth: 1,
-              data: [fruits[3].count, 0, 0],
+              data: [fruits[3].count, pets[3].count, 0],
               backgroundColor: "rgba(206, 53, 237, 0.5)"
             }
           ],
@@ -110,7 +117,6 @@ export default {
               }
             }
           },
-          responsive: true,
           scales: {
             yAxes: [
               {
@@ -124,6 +130,9 @@ export default {
           }
         }
       });
+      // end chart
+      myChart.canvas.parentNode.style.height = "700px";
+      myChart.canvas.parentNode.style.width = "700px";
     }
   },
   created() {
