@@ -1,4 +1,9 @@
 {
-    "presets": ["@babel/preset-env", "babel-preset-vue"],
-    "plugins": ["transform-regenerator"]
+    "presets": ["babel-preset-vue", "@babel/preset-env"],
+    "plugins": ["transform-regenerator"],
+    "env": {
+      "test": {
+        "presets": [["env", { "targets": { "node": "current" } }]]
+      }
+    }
   }

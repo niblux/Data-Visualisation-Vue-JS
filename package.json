@@ -1,5 +1,16 @@
 {
   "name": "vue-suade-labs",
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "vue"
+    ],
+    "transform": {
+      ".*\\.(vue)$": "vue-jest",
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest"
+    }
+  },
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -26,7 +37,9 @@
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
     "@fortawesome/free-regular-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "@vue/test-utils": "^1.0.3",
     "axios": "^0.19.2",
+    "babel-preset-env": "^1.7.0",
     "chart.js": "^2.9.3",
     "css-loader": "^3.5.3",
     "file-loader": "^6.0.0",
@@ -34,12 +47,14 @@
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.1",
     "vue": "^2.6.11",
+    "vue-jest": "^3.0.5",
     "vue-router": "^3.1.6",
     "vuex": "^3.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
+    "babel-core": "^7.0.0-bridge.0",
     "@babel/preset-env": "^7.9.6",
+    "babel-jest": "^26.0.1",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-regenerator": "^6.26.0",
     "babel-polyfill": "^6.26.0",
