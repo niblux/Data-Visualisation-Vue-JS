@@ -1,32 +1,32 @@
 <template>
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Count</th>
-          <th></th>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Count</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <template v-for="row in rows">
+        <tr v-for="item in row" :key="item.id">
+          <td>{{ item.name }}</td>
+          <template v-if="item.edit">
+            <td>
+              <input class="table-input" type="text" v-model.number="item.count" />
+            </td>
+          </template>
+          <template v-if="!item.edit">
+            <td>{{ item.count }}</td>
+          </template>
+          <td>
+            <button v-on:click="setEdit($event, item)">Edit</button>
+            <button v-show="item.edit" v-on:click="updateItem($event, item)">Save</button>
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        <template v-for="row in rows">
-            <tr v-for="item in row" :key="item.id">
-              <td>{{ item.name }}</td>
-              <template v-if="item.edit">
-              <td>
-                <input class="table-input" type="text" v-model.number="item.count" />
-                </td>
-              </template>
-              <template v-if="!item.edit">
-                <td>{{ item.count }}</td>
-              </template>
-              <td>
-              <button v-on:click="setEdit($event, item)">Edit</button>
-              <button v-show="item.edit" v-on:click="updateItem($event, item)">Save</button>
-              </td>
-            </tr>
-        </template>
-      </tbody>
-    </table>
+      </template>
+    </tbody>
+  </table>
 </template>
 
 <script>
@@ -51,11 +51,11 @@ export default {
   },
   methods: {
     setEdit(evt, item) {
-      item.edit = !item.edit
-    }, 
+      item.edit = !item.edit;
+    },
     updateItem(evt, item) {
       item.edit = false;
-      this.$store.dispatch('updateData', item);
+      this.$store.dispatch("updateData", item);
     }
   },
   computed: {
@@ -90,22 +90,27 @@ table td {
 table td:last-child {
   border-right: none;
 }
-table tbody tr:nth-child(2n) td {
-  background: #efefef;
+table tbody tr td {
+  background: #fff;
+  border-bottom: 1px solid #dee2e6;
+}
+
+tr:hover {
+  background: var(--icon-colour);
 }
 
 button {
-    background: white;
-    border-radius: 5px;
-    padding: 5px;
-    width: 50px;
-    margin: 10px;
+  background: white;
+  border-radius: 5px;
+  padding: 5px;
+  width: 50px;
+  margin: 10px;
 }
 
 .table-input {
   background: none;
-    border: none;
-    font-size: 16px;
-    font-family: 'Nunito';
+  border: none;
+  font-size: 16px;
+  font-family: "Nunito";
 }
 </style>

@@ -117,6 +117,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.displayPieChart(this.chartData);
+      console.log('this.chartData', this.chartData);
     }, 1000);
   },
   created() {

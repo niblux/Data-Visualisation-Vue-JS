@@ -1,9 +1,14 @@
 <template>
-
- <div class="bar-chart">
-    <canvas id="bar-chart" class="card"></canvas>
-    <div class="table-edit card">
-      <TableEdit :chartData="chartData" />
+  <div class="bar-chart">
+    <div class="header">
+      <div class="header-left">Customer Data</div>
+      <div class="header-right">Edit Data</div>
+    </div>
+    <div class="card-body">
+      <canvas id="bar-chart" class="card"></canvas>
+      <div class="table-edit">
+        <TableEdit :chartData="chartData" />
+      </div>
     </div>
   </div>
 </template>
@@ -68,6 +73,22 @@ export default {
           backgroundColor: []
         },
         options: {
+          scales: {
+            xAxes: [
+              {
+                gridLines: {
+                  drawOnChartArea: false
+                }
+              }
+            ],
+            yAxes: [
+              {
+                gridLines: {
+                  drawOnChartArea: false
+                }
+              }
+            ]
+          },
           animation: {
             onComplete: function() {
               const chartInstance = this.chart;

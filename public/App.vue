@@ -15,16 +15,12 @@
           </li>
         </router-link>
         <router-link to="/pie-chart">
-          <li
-            @click="active = 'pie'"
-            class="navbar__menu--item"
-            :class="{active:active === 'pie'}"
-          >
+          <li @click="active = 'pie'" class="navbar__menu--item" :class="{active:active === 'pie'}">
             <i class="fas fa-chart-pie"></i>
           </li>
         </router-link>
         <router-link to="/upload">
-        <li
+          <li
             @click="active = 'upload'"
             class="navbar__menu--item"
             :class="{active:active === 'upload'}"
@@ -77,8 +73,7 @@ export default {
     PieChart,
     TableEdit
   },
-  methods: {
-  },
+  methods: {},
   updated() {
     this.$store.getters.chartData;
   },
@@ -86,7 +81,7 @@ export default {
     this.$store.dispatch("getData");
   },
   mounted() {
-    this.active = 'chart';
+    this.active = "chart";
     this.$nextTick(function() {
       this.tableData = Object.entries(this.chartData);
     });
@@ -104,7 +99,7 @@ body {
 
 .container {
   display: grid;
-  grid-template-columns: 80px 1fr;
+  grid-template-columns: 65px 1fr;
   grid-template-rows: minmax(1200px, auto);
 }
 
@@ -117,7 +112,7 @@ body {
 
 .menu-icon {
   background: var(--icon-colour);
-  font-size: 2em;
+  font-size: 1em;
   padding: 18px 26px;
   color: white;
 }
@@ -142,6 +137,7 @@ ul.nav-links li {
   align-items: center;
   justify-content: center;
   padding: 35px 0px;
+  color: var(--icon-colour);
 }
 
 a:-webkit-any-link > li.page-link {
@@ -166,7 +162,7 @@ a:-webkit-any-link > li.page-link {
 
 .main-grid {
   display: grid;
-  grid-template-rows: 80px 1fr;
+  grid-template-rows: 58px 1fr;
   background: #edf6ff;
 }
 
@@ -210,7 +206,7 @@ header {
 
 .search {
   padding: 10px;
-  margin: 20px 20px;
+  margin: 10px 20px;
   align-self: center;
   justify-self: center;
   font-size: 16px;
@@ -275,7 +271,7 @@ header {
 }
 
 .table-edit {
-  padding: 10px;
+  padding: 0px 10px;
   grid-row: 1;
   grid-column: 3;
 }
@@ -286,8 +282,8 @@ header {
 }
 
 .card {
+  background: white;
   border: 1px solid #efefef;
-  border-radius: 10px;
   padding: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
@@ -295,5 +291,26 @@ header {
 
 .card:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+  display: grid;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 11em;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border: 1px solid var(--icon-colour);
+}
+
+.header-left {
+  grid-column: 1;
+}
+
+.header-right {
+  grid-column: 2;
 }
 </style>
