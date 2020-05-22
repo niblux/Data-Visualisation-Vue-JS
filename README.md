@@ -1,4 +1,4 @@
-# vue-suade-labs
+# Data-Visualisation-Vue-JS
 
 Get Started with 
 
