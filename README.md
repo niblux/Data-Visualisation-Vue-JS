@@ -10,3 +10,5 @@ Running project
 
 Bar Chart and Pie Chart created using the Chart JS Library.
 
+![](vuesuadevuejsgif.gif)
+
